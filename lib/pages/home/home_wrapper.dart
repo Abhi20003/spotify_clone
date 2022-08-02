@@ -40,37 +40,38 @@ class _HomeWrapperState extends State<HomeWrapper> {
     List titles = ['Home', 'Search', 'Your Library', 'Premium'];
     return Container(
       color: Colors.white.withOpacity(0),
-      height: 60,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: List.generate(items.length, (index) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              IconButton(
-                onPressed: () {
-                  setState(() {
-                    activePage = index;
-                  });
-                },
-                icon: Icon(
-                  items[index],
-                  color: activePage == index ? Colors.green : Colors.white,
-                  size: 25,
-                ),
-              ),
-              Text(
-                titles[index],
-                style:
-                    TextStyle(color: Colors.white, fontSize: 10, height: 0.2),
-              ),
-              SizedBox(
-                height: 10.0,
-              )
-            ],
-          );
-        }),
+      height: 60, //60
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: List.generate(items.length, (index) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        activePage = index;
+                      });
+                    },
+                    icon: Icon(
+                      items[index],
+                      color: activePage == index ? Colors.green : Colors.white,
+                      size: 25,
+                    ),
+                  ),
+                  Text(
+                    titles[index],
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 10, height: 0.2),
+                  ),
+                ],
+              );
+            }),
+          ),
+        ],
       ),
     );
   }

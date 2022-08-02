@@ -7,6 +7,9 @@ import 'package:spotify_clone/shared/loading.dart';
 import 'package:spotify_clone/main.dart';
 
 List featuredPlaylist = [];
+List<int> cnt = [6, 7, 8, 9, 15, 16];
+List<int> row = [0, 1, 2, 3, 4];
+List topCharts = [];
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -16,24 +19,27 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     final spotify = spotifyQuery();
     double sW = MediaQuery.of(context).size.width;
     double sH = MediaQuery.of(context).size.height;
-    spotify.featuredPlaylist().then((value) {
+    spotify.searchCharts().then((play) {
+      if (mounted) {
+        setState(() {
+          topCharts = play;
+        });
+      } else {}
+    });
+    spotify.searchPlaylist().then((value) {
       if (mounted) {
         setState(() {
           featuredPlaylist = value;
         });
       } else {}
     });
-    // featuredPlaylist.forEach((element) {
-    //   print(element.name);
-    // });
-
-    return featuredPlaylist.isEmpty
+    return (featuredPlaylist.length < 10 || topCharts.length < 6)
         ? Loading()
         : Scaffold(
             backgroundColor: Colors.black,
@@ -44,29 +50,36 @@ class _HomeState extends State<Home> {
                 children: [
                   Container(
                     height: (50.0 * sH / mysH),
-                    color: Colors.white.withOpacity(0.3),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          "Good afternoon",
+                          "Explore",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 25.0,
                               fontWeight: FontWeight.bold),
                         ),
                         Spacer(),
-                        IconButton(
-                          padding: EdgeInsets.only(top: 15 * sH / mysH),
-                          onPressed: () => null,
-                          icon: Icon(FeatherIcons.bell),
-                          color: Colors.white,
+                        Tooltip(
+                          message: "I'm of no use :)",
+                          triggerMode: TooltipTriggerMode.tap,
+                          child: IconButton(
+                            padding: EdgeInsets.only(top: 15 * sH / mysH),
+                            onPressed: () => null,
+                            icon: Icon(FeatherIcons.bell),
+                            color: Colors.white,
+                          ),
                         ),
-                        IconButton(
-                          padding: EdgeInsets.only(top: 15 * sH / mysH),
-                          onPressed: () => null,
-                          icon: Icon(FeatherIcons.clock),
-                          color: Colors.white,
+                        Tooltip(
+                          message: "I'm of no use :)",
+                          triggerMode: TooltipTriggerMode.tap,
+                          child: IconButton(
+                            padding: EdgeInsets.only(top: 15 * sH / mysH),
+                            onPressed: () => null,
+                            icon: Icon(FeatherIcons.clock),
+                            color: Colors.white,
+                          ),
                         ),
                         IconButton(
                           padding: EdgeInsets.only(top: 15 * sH / mysH),
@@ -79,27 +92,75 @@ class _HomeState extends State<Home> {
                       ],
                     ),
                   ),
-                  Row(
-                    children: [
-                      smallTile(featuredPlaylist[0], context),
-                      SizedBox(width: 5 * sW / mysW),
-                      smallTile(featuredPlaylist[1], context)
-                    ],
+                  Container(
+                      child: Column(
+                    children: List.generate(3, (index) {
+                      return Row(
+                        children: List.generate(2, (index1) {
+                          return smallTile(
+                              featuredPlaylist[index1 + index + row[index]],
+                              context);
+                        }),
+                      );
+                    }),
+                  )),
+                  SizedBox(
+                    height: 10 * sH / mysH,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      smallTile(featuredPlaylist[2], context),
-                      SizedBox(width: 5 * sW / mysW),
-                      smallTile(featuredPlaylist[3], context)
+                      Text(
+                        "Featured Playlists",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
+                  SizedBox(
+                    height: 10 * sH / mysH,
+                  ),
+                  Container(
+                    height: 160,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        itemBuilder: ((context, index) {
+                          return playlistTile(
+                              featuredPlaylist[cnt[index]], context);
+                        })),
+                  ),
+                  SizedBox(
+                    height: 20 * sH / mysH,
+                  ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      smallTile(featuredPlaylist[4], context),
-                      SizedBox(width: 5 * sW / mysW),
-                      smallTile(featuredPlaylist[5], context)
+                      Text(
+                        "Top charts",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
-                  )
+                  ),
+                  SizedBox(
+                    height: 10 * sH / mysH,
+                  ),
+                  Container(
+                    height: 160,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        itemBuilder: ((context, index) {
+                          return playlistTile(topCharts[index], context);
+                        })),
+                  ),
                 ],
               ),
             ));

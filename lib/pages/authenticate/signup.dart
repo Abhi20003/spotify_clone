@@ -5,7 +5,6 @@ import 'package:spotify_clone/shared/decoration.dart';
 import 'package:spotify_clone/shared/loading.dart';
 
 String err = "";
-bool entry = false;
 
 class SignUp extends StatefulWidget {
   final Function value;
@@ -129,8 +128,9 @@ class _SignUpState extends State<SignUp> {
                                 Text(
                                   err,
                                   style: TextStyle(
-                                    color:
-                                        entry ? Colors.red[300] : Colors.black,
+                                    color: errText
+                                        ? Colors.red[300]
+                                        : Colors.black,
                                     fontSize: 14.0,
                                   ),
                                   textAlign: TextAlign.center,

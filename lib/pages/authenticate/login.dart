@@ -38,7 +38,7 @@ class _LogInState extends State<LogIn> {
                 backgroundColor: Colors.black,
                 body: Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 100.0, horizontal: 0.0),
+                      EdgeInsets.symmetric(vertical: 90.0, horizontal: 0.0),
                   child: Column(
                     children: <Widget>[
                       Center(
@@ -199,9 +199,12 @@ class _LogInState extends State<LogIn> {
                                 borderRadius: BorderRadius.circular(50)),
                             child: Row(
                               children: [
-                                Icon(FeatherIcons.globe),
+                                Image.asset(
+                                  "assets/google.png",
+                                  scale: 18,
+                                ),
                                 SizedBox(
-                                  width: 40 * sW / mysW,
+                                  width: 34 * sW / mysW,
                                 ),
                                 Text(
                                   "LogIn With Google",

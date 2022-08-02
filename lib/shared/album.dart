@@ -2,19 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:spotify_clone/main.dart';
+import 'package:spotify_clone/shared/loading.dart';
 import 'package:spotify_clone/shared/tiles.dart';
 
 bool toggle = false;
 
-class PlaylistPage extends StatefulWidget {
+class AlbumPage extends StatefulWidget {
   late Map<dynamic, dynamic>? args;
-  PlaylistPage(this.args);
+  AlbumPage(this.args);
 
   @override
-  State<PlaylistPage> createState() => _PlaylistPageState();
+  State<AlbumPage> createState() => _AlbumPageState();
 }
 
-class _PlaylistPageState extends State<PlaylistPage> {
+class _AlbumPageState extends State<AlbumPage> {
   final controller = ScrollController();
   late List tracklist;
   bool isvisible = true;
@@ -27,11 +28,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("In Playlist");
+    print("In Album");
     var data = ModalRoute.of(context)!.settings.arguments as Map;
     double sW = MediaQuery.of(context).size.width;
     double sH = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
@@ -39,7 +39,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
         backgroundColor: Colors.black,
         leading: InkWell(
           onTap: () {
-            print("Out of playlist");
+            print("Out of Album");
             Navigator.pop(context);
           },
           child: Icon(
@@ -54,7 +54,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
           controller: controller,
           children: [
             Container(
-              height: (350 + 60 * tracklist.length).toDouble(),
+              height: (410 + 60 * tracklist.length).toDouble(),
               child: Column(
                 children: [
                   Row(
@@ -80,7 +80,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                               color: Colors.white,
                               size: 20,
                             ),
-                            hintText: "Find in playlist",
+                            hintText: "Find in album",
                             hintStyle: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -152,29 +152,11 @@ class _PlaylistPageState extends State<PlaylistPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        data['description'],
+                        "Album" + "-" + data['year'],
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                       SizedBox(
                         height: 8 * sW / mysW,
-                      ),
-                      Row(
-                        children: [
-                          Image.asset(
-                            "assets/spotify_logo.png",
-                            scale: 50,
-                          ),
-                          SizedBox(
-                            width: 7 * sH / mysH,
-                          ),
-                          Text(
-                            data['owner'].displayName,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
                       ),
                       SizedBox(
                         height: 8 * sW / mysW,
